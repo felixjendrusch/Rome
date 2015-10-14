@@ -32,9 +32,9 @@ Pod::HooksManager.register('cocoapods-rome', :post_install) do |installer_contex
         spec_names.each do |root_name|
           product_module_name = c99ext_identifier(root_name)
           executable_path = "#{build_dir}/#{product_module_name}"
-          device_lib = "#{build_dir}/#{CONFIGURATION}-#{DEVICE}/#{target_label}/#{product_module_name}.framework/#{product_module_name}"
+          device_lib = "#{build_dir}/#{CONFIGURATION}-#{DEVICE}/#{product_module_name}.framework/#{product_module_name}"
           device_framework_lib = File.dirname(device_lib)
-          simulator_lib = "#{build_dir}/#{CONFIGURATION}-#{SIMULATOR}/#{target_label}/#{product_module_name}.framework/#{product_module_name}"
+          simulator_lib = "#{build_dir}/#{CONFIGURATION}-#{SIMULATOR}/#{product_module_name}.framework/#{product_module_name}"
 
           next unless File.file?(device_lib) && File.file?(simulator_lib)
 
