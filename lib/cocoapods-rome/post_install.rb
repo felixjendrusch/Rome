@@ -34,7 +34,10 @@ Pod::HooksManager.register('cocoapods-rome', :post_install) do |installer_contex
           executable_path = "#{build_dir}/#{product_module_name}"
           device_lib = "#{build_dir}/#{CONFIGURATION}-#{DEVICE}/#{product_module_name}.framework/#{product_module_name}"
           device_framework_lib = File.dirname(device_lib)
+          device_modules_lib = "#{device_framework_lib}/Modules/#{product_module_name}.swiftmodule"
           simulator_lib = "#{build_dir}/#{CONFIGURATION}-#{SIMULATOR}/#{product_module_name}.framework/#{product_module_name}"
+          simulator_framework_lib = File.dirname(simulator_lib)
+          simulator_modules_lib = "#{simulator_framework_lib}/Modules/#{product_module_name}.swiftmodule"
 
           next unless File.file?(device_lib) && File.file?(simulator_lib)
 
@@ -42,6 +45,12 @@ Pod::HooksManager.register('cocoapods-rome', :post_install) do |installer_contex
           puts lipo_log unless File.exist?(executable_path)
 
           FileUtils.mv executable_path, device_lib
+
+          module_files = Pathname.glob("#{simulator_modules_lib}/*")
+          module_files.each do |module_file|
+            FileUtils.mv module_file, device_modules_lib
+          end
+
           FileUtils.mv device_framework_lib, build_dir
         end
       else
